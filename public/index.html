@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+  <title>Mini Web AI Lab</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">MW</div>
+        <div>
+          <strong>Mini Web AI Lab</strong>
+          <small>System 1 experiment</small>
+        </div>
+      </div>
+
+      <button id="newConversation" class="primary-action" type="button">Nova conversa</button>
+
+      <nav class="nav-links" aria-label="Navegação">
+        <a class="nav-link active" href="/">Chat</a>
+        <a class="nav-link" href="/lab.html">Painel de laboratório</a>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <label class="field-label" for="modeSelect">Modo experimental</label>
+        <select id="modeSelect" class="select-control">
+          <option value="ECONOMICO">Econômico</option>
+          <option value="NORMAL" selected>Normal</option>
+          <option value="QUALIDADE">Qualidade</option>
+        </select>
+
+        <button id="themeToggle" class="secondary-action" type="button">Alternar tema</button>
+        <button id="clearHistory" class="danger-action" type="button">Limpar histórico</button>
+      </div>
+    </aside>
+
+    <main class="chat-main">
+      <header class="mobile-header">
+        <div class="mobile-title">
+          <strong>Mini Web AI Lab</strong>
+          <small id="mobileModeLabel">Modo Normal</small>
+        </div>
+        <div class="mobile-actions">
+          <select id="mobileModeSelect" class="mobile-select" aria-label="Modo experimental">
+            <option value="ECONOMICO">Eco</option>
+            <option value="NORMAL">Normal</option>
+            <option value="QUALIDADE">Qualidade</option>
+          </select>
+          <button id="mobileNewConversation" type="button">Nova</button>
+          <button id="mobileThemeToggle" type="button">Tema</button>
+          <button id="mobileClearHistory" type="button">Limpar</button>
+          <a href="/lab.html">Lab</a>
+        </div>
+      </header>
+
+      <section id="conversation" class="conversation" aria-live="polite">
+        <div id="emptyState" class="empty-state">
+          <div class="empty-mark">MW</div>
+          <h1>Mini Web AI Lab</h1>
+          <p>Faça uma pergunta. O sistema tentará resolver localmente antes de pesquisar ou chamar um modelo.</p>
+          <div class="example-grid">
+            <button class="example" data-question="Quanto é 25 x 48?">25 × 48</button>
+            <button class="example" data-question="Quem descobriu o Brasil?">Pergunta estável</button>
+            <button class="example" data-question="Qual é a versão atual do iOS?">Pergunta atual</button>
+          </div>
+        </div>
+      </section>
+
+      <div class="composer-wrap">
+        <div id="status" class="status hidden" role="status">Analisando…</div>
+        <form id="chatForm" class="composer">
+          <textarea id="messageInput" rows="1" maxlength="4000" placeholder="Digite sua pergunta…" autocomplete="off" aria-label="Mensagem"></textarea>
+          <button id="sendButton" type="submit">Enviar</button>
+        </form>
+        <div class="composer-note">Decisão local primeiro. Pesquisa e IA somente quando necessárias.</div>
+      </div>
+    </main>
+  </div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>

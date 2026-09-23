@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'">
+  <title>Laboratório — Mini Web AI Lab</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <main class="lab-page">
+    <header class="lab-header">
+      <div>
+        <a class="back-link" href="/">Voltar ao chat</a>
+        <h1>Painel de laboratório</h1>
+        <p>Métricas acumuladas nesta sessão do navegador.</p>
+      </div>
+      <button id="resetMetrics" class="danger-action" type="button">Zerar métricas</button>
+    </header>
+
+    <section class="metric-grid" aria-label="Métricas principais">
+      <article class="metric-card"><span>Perguntas</span><strong id="metricQuestions">0</strong></article>
+      <article class="metric-card"><span>Chamadas ao modelo</span><strong id="metricModelCalls">0</strong></article>
+      <article class="metric-card"><span>Pesquisas web</span><strong id="metricWeb">0</strong></article>
+      <article class="metric-card"><span>Resolvidas localmente</span><strong id="metricLocal">0</strong></article>
+      <article class="metric-card"><span>Cache hits</span><strong id="metricCache">0</strong></article>
+      <article class="metric-card"><span>Tokens consumidos</span><strong id="metricTokens">0</strong></article>
+      <article class="metric-card"><span>Tempo médio</span><strong id="metricLatency">0 ms</strong></article>
+      <article class="metric-card accent"><span>Taxa de resolução local</span><strong id="metricLocalRate">0%</strong></article>
+    </section>
+
+    <section class="lab-section">
+      <div class="section-heading">
+        <div>
+          <h2>Eficiência experimental</h2>
+          <p>Estimativa baseada nas requisições que não precisaram chamar modelo generativo.</p>
+        </div>
+        <strong id="metricSavings" class="savings">0%</strong>
+      </div>
+      <div class="progress"><div id="savingsBar" class="progress-bar"></div></div>
+    </section>
+
+    <section class="lab-section">
+      <div class="section-heading">
+        <div>
+          <h2>Decisões recentes do roteador</h2>
+          <p>Registro local das últimas execuções.</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Hora</th>
+              <th>Pergunta</th>
+              <th>Rota</th>
+              <th>Web</th>
+              <th>Modelo</th>
+              <th>Cache</th>
+              <th>Tempo</th>
+            </tr>
+          </thead>
+          <tbody id="decisionTable"></tbody>
+        </table>
+      </div>
+      <p id="noRecords" class="muted">Nenhuma execução registrada ainda.</p>
+    </section>
+  </main>
+
+  <script src="/lab.js" defer></script>
+</body>
+</html>

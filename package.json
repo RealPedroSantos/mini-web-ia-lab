@@ -1,19 +1,7 @@
 {
-  "name": "mini-web-ai-lab",
-  "version": "1.0.0",
-  "private": true,
-  "type": "module",
-  "description": "MVP experimental de chat com roteamento local, busca web seletiva e IA generativa como último recurso.",
-  "engines": {
-    "node": "22.x"
-  },
-  "scripts": {
-    "dev": "node --watch local-server.js",
-    "start": "node local-server.js",
-    "test": "node --test"
-  },
-  "dependencies": {
-    "dotenv": "^16.4.7",
-    "express": "^5.1.0"
-  }
+  "name":"rumo-finance-openfinance",
+  "version":"1.1.0",
+  "private":true,
+  "scripts":{"dev":"next dev","build":"next build","start":"next start"},
+  "dependencies":{"next":"^16.0.0","react":"^19.0.0","react-dom":"^19.0.0","react-pluggy-connect":"latest"}
 }

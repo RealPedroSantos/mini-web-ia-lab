@@ -4,7 +4,7 @@ export function isPluggyConfigured(){return Boolean(process.env.PLUGGY_CLIENT_ID
 async function safeJson(r){try{return await r.json()}catch{return{}}}
 export async function getApiKey(){const {clientId,clientSecret}=creds();const r=await fetch(`${API_BASE}/auth`,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({clientId,clientSecret}),cache:'no-store'});const p=await safeJson(r);if(!r.ok||!p?.apiKey){const e=new Error(p?.message||p?.error||`Falha de autenticação Pluggy (${r.status})`);e.status=r.status;throw e}return p.apiKey}
 export async function pluggyFetch(path,options={}){const apiKey=await getApiKey();const r=await fetch(`${API_BASE}${path}`,{...options,headers:{'content-type':'application/json','x-api-key':apiKey,...(options.headers||{})},cache:'no-store'});const p=await safeJson(r);if(!r.ok){const e=new Error(p?.message||p?.error||`Pluggy respondeu ${r.status}`);e.status=r.status;e.payload=p;throw e}return p}
-export async function createConnectToken(clientUserId='owner'){return pluggyFetch('/connect_token',{method:'POST',body:JSON.stringify({options:{clientUserId,avoidDuplicates:true}})})}
+export async function createConnectToken(clientUserId='owner'){/* O MeuPluggy (conector 200) usa o mesmo login para autorizar bancos diferentes. */return pluggyFetch('/connect_token',{method:'POST',body:JSON.stringify({options:{clientUserId,avoidDuplicates:false}})})}
 export async function getAccounts(itemId){const p=await pluggyFetch(`/accounts?itemId=${encodeURIComponent(itemId)}`);return Array.isArray(p)?p:(p?.results||[])}
 async function getAccountTransactions(accountId,dateFrom){
   const apiKey=await getApiKey(); let url=new URL(`${API_BASE}/v2/transactions`); url.searchParams.set('accountId',accountId); if(dateFrom) url.searchParams.set('dateFrom',dateFrom); let all=[]; let guard=0;
@@ -37,7 +37,7 @@ export async function getFinancialSnapshot(input,months=6){
       let accounts=[];try{accounts=await getAccounts(id)}catch(error){warnings.push(`${institution}: consulta das contas indisponível (${error?.message||'erro'}).`)}
       let investments=[];if(item?.products?.includes('INVESTMENTS'))try{investments=await getInvestments(id)}catch(error){warnings.push(`${institution}: investimentos indisponíveis (${error?.message||'erro'}).`)}
       if(!accounts.length&&!investments.length)warnings.push(`${institution}: nenhuma conta ou investimento foi disponibilizado para este consentimento.`);
-      if(item?.connector?.isOpenFinance===false)warnings.push(`${institution}: conexão direta, não Open Finance. Para Itaú e XP utilize o conector identificado por [OF] e refaça o consentimento.`);
+      if(item?.connector?.isOpenFinance===false&&Number(item?.connector?.id)!==200)warnings.push(`${institution}: conexão direta em vez de Open Finance. Consulte o tipo de conector autorizado.`);
       const transactionResults=await Promise.allSettled(accounts.map(async(account)=>{
         const transactions=await getAccountTransactions(account.id,dateFrom);
         return transactions.map(t=>({...t,accountId:account.id,accountType:account.type,accountSubtype:account.subtype,accountName:account.name||account.marketingName||account.number||'Conta',itemId:id}));
